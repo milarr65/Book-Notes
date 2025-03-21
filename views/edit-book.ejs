@@ -1,0 +1,46 @@
+<%- include('partials/header.ejs') %>
+
+    <div class="myContainer">
+        <!-------------- form pre-filled with current data --------->
+        <div class="details">
+            <div class="left-side">
+                <img class="details-img" src="https://covers.openlibrary.org/b/id/<%= book.cover_id %>-L.jpg"
+                    alt="Book Cover">
+
+            </div>
+            <form action="/update/<%= book.id %>" method="post" class="add-form text">
+
+                <div class="form-fields form-control">
+                    <label class="text" for="title">Book Title</label>
+                    <input type="text" name="title" id="title" value="<%= book.title %>" readonly>
+
+                    <label class="text" for="author">Author</label>
+                    <input type="text" name="author" id="author" value="<%= book.author %>" readonly>
+
+                    <input type="hidden" id="cover_id" name="cover_id" value="<%= book.cover_id %>">
+
+                    <label class="text" for="user_rating">Star rating</label>
+                    <select class="text" name="user_rating" id="user_rating">
+                        <option value="">Rate it out of 5 stars</option>
+                        <hr />
+                        <option value="1" <%=book.user_rating==1 ? 'selected' : '' %>>⭐</option>
+                        <option value="2" <%=book.user_rating==2 ? 'selected' : '' %>>⭐⭐</option>
+                        <option value="3" <%=book.user_rating==3 ? 'selected' : '' %>>⭐⭐⭐</option>
+                        <option value="4" <%=book.user_rating==4 ? 'selected' : '' %>>⭐⭐⭐⭐</option>
+                        <option value="5" <%=book.user_rating==5 ? 'selected' : '' %>>⭐⭐⭐⭐⭐</option>
+                    </select>
+
+                    <label class="text" for="review">Your review</label>
+                    <textarea class="text" name="review" id="review"><%= book.review %></textarea>
+
+                    <div class="form-buttons">
+                        <button class="btn btn-primary mt-2 title" type="submit">Save changes</button>
+                        <a class="btn btn-primary mt-2 title" onclick="history.back()">Cancel</a>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <%- include('partials/footer.ejs') %>

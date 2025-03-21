@@ -1,0 +1,84 @@
+<%- include('partials/header.ejs') %>
+
+    <h3 class="title">My Books</h3>
+
+    <!------------- SORTING MENU AND BOOK COUNT --------------->
+    <div class="sort-container">
+
+        <form action="/" method="get" class="sort-menu">
+
+            <label for="sort" class="form-label title">Sort by:</label>
+
+            <select class="form-select text" name="sort" id="sort" onchange="this.form.submit()">
+                <!-- keep selected the chosen sorting option -->
+                <option value="rating" <%=sortBy==='rating' ? 'selected' : '' %>>Rating</option>
+                <option value="recent" <%=sortBy==='recent' ? 'selected' : '' %>>Most Recent</option>
+                <option value="title" <%=sortBy==='title' ? 'selected' : '' %>>Title (A-Z)</option>
+
+            </select>
+
+        </form>
+
+
+
+        <p class="text">Total books: <%= books.length %>
+        </p>
+
+    </div>
+
+    <!---------------- BOOK CARDS -------------->
+    <div class="myContainer">
+        <% if (locals.books) { %>
+            <% books.forEach(book=> { %>
+                <div class="card book-card text-center">
+                    <div class="book-cover-container">
+                        <!-- Flip Effect Container -->
+                        <div class="book-cover-inner">
+                            <!-- Front: Book Cover -->
+                            <div class="book-cover-front">
+                                <img src="<%= book.cover_id ? `https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg` : '/assets/dummy-image-portrait.jpg' %>"
+                                    alt="Book Cover" class="book-cover img-fluid">
+                            </div>
+                            <!-- Back: Book Description -->
+                            <div class="book-cover-back">
+                                <p class="text">
+                                    <%- book.description ? book.description.replace(/<\/?p>/g, '').replace(/\n/g, ' ')
+                                        : "No description available." %>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book Info -->
+                    <div class="card-body">
+                        <h5 class="card-title title">
+                            <%= book.title %>
+                        </h5>
+                        <p class="text-muted card-title text">By <%= book.author %>
+                        </p>
+
+                        <!-- Star Rating -->
+                        <div class="star-rating">
+                            <% for (let i=1; i <=5; i++) { %>
+                                <% if (i <=book.user_rating) { %>
+                                    <i class="fas fa-star filled-star"></i> <!-- Solid star -->
+                                    <% } else { %>
+                                        <i class="far fa-star empty-star"></i> <!-- Outlined star -->
+                                        <% } %>
+                                            <% } %>
+                        </div>
+
+
+                        <!-- Details Button -->
+                        <a href="/details/<%= book.id %>" class="btn btn-primary mt-2 title">Read my thoughts</a>
+                    </div>
+                </div>
+
+                <% }) %>
+
+                    <% } else {%>
+                        <h2 class="title">No books to show</h2>
+                        <% } %>
+
+    </div>
+    <%- include('partials/footer.ejs') %>

@@ -1,0 +1,24 @@
+<%- include('partials/header.ejs') %>
+
+    <div class="myContainer">
+
+        <!------------- SEARCH RESULTS --------------->
+        <h3 class="title">Search Results</h3>
+
+        <!------------- PAGINATION CONTROLS --------------->
+        <div id="pagination-controls" style="margin-top: 20px;"></div>
+
+        <!------------- BOOK CARDS --------------->
+        <div id="results-container" class="cards-container"></div>
+
+    </div>
+
+    <!-- Store JSON data inside a hidden script tag -->
+    <script id="results-data" type="application/json">
+        <%- JSON.stringify(results) %>
+    </script>
+
+    <!-- Link to external JavaScript file -->
+    <script src="/js/pagination.js"></script>
+
+    <%- include('partials/footer.ejs') %>
