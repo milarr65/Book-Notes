@@ -25,7 +25,7 @@ app.use(express.json());
 app.set("view engine", "ejs");
 
 const search_url = 'https://openlibrary.org/search.json';
-const covers_url = 'https://covers.openlibrary.org/b' /* add key-L.jpg */
+const covers_url = 'https://covers.openlibrary.org/b' /* add <key>-L.jpg */
 const base_url = 'https://openlibrary.org' /* add .json at the end */
 
 let books = [];
@@ -153,7 +153,6 @@ app.get('/search', async (req, res) => {
 
 
 });
-
 
 //Use axios to send search query to Open Library API and return search results
 async function searchAPI(query) {
