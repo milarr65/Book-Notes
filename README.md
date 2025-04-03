@@ -1,8 +1,7 @@
 # Book Notes | Web-Dev Project
 
-This project is part of the webcourse **_The Complete Full-Stack Web Development Bootcamp_**
-
 Built with NodeJS, Bootstrap and PostgreSQL, users can log, rate and review books they have read. All book information and covers images are provided by The Open Library API.
+_All the code was entirely made by me. No tutorial was used in the process of making this_
 
 ## Screenshots
 
