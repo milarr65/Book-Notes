@@ -1,7 +1,7 @@
 import express from "express";
 import axios from "axios";
 import bodyParser from "body-parser";
-import db from "./db";
+import db from "./db.js";
 import { marked } from "marked"; //converts markdown to html
 
 const app = express();
