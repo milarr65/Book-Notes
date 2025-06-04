@@ -1,12 +1,14 @@
-<%- include('partials/header.ejs') %>
+<%- include('partials/header.ejs', { activePage: '' }) %>
     <% if (locals.book) { %>
 
         <div class="myContainer">
             <div class="details">
                 <div class="left-side">
                     <!-- Book Cover -->
+                     <div class="img-wrapper">
                     <img src="<%= book.cover_url ? book.cover_url 
                 : '/assets/dummy-image-portrait.jpg' %>" alt="Book Cover" class="details-img">
+                </div>
 
                     <!-- Buttons -->
                     <div class="details-buttons">

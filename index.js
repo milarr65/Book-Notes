@@ -39,7 +39,7 @@ app.get('/', async (req, res) => {
 
         books = result.rows;
 
-        res.render('index.ejs', { books, sortBy })
+        res.render('index.ejs', { books, sortBy, activePage:"home" })
 
     } catch (error) {
         console.log(error);
@@ -48,7 +48,7 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/about', (req, res) => {
-    res.render('about');
+    res.render('about', {activePage:"about"});
 });
 
 // Get book from database and render details page 

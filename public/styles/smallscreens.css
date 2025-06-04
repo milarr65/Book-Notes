@@ -1,6 +1,7 @@
 @media (max-width: 600px) {
-    .myContainer {
+    .myContainer-cards {
         gap: 0;
+        margin: 0;
     }
     /***************** Details Page **************/
     div.details {
@@ -38,6 +39,10 @@
     }
 
     .right-side {
+        width: 100%;
+    }
+
+    .text.row{
         width: 100%;
     }
 
