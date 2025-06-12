@@ -5,7 +5,7 @@ import db from "./db.js";
 import { marked } from "marked"; //converts markdown to html
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -39,7 +39,7 @@ app.get('/', async (req, res) => {
 
         books = result.rows;
 
-        res.render('index.ejs', { books, sortBy, activePage:"home" })
+        res.render('index.ejs', { books, sortBy, activePage: "home" })
 
     } catch (error) {
         console.log(error);
@@ -48,7 +48,7 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/about', (req, res) => {
-    res.render('about', {activePage:"about"});
+    res.render('about', { activePage: "about" });
 });
 
 // Get book from database and render details page 
