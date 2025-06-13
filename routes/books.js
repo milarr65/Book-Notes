@@ -26,7 +26,7 @@ router.get('/details/:book_id', async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server Error");
+    res.render('error', { errorMessage: "Failed to fetch book details.", status:500 });
   }
 
 
@@ -66,13 +66,13 @@ router.post('/details/:book_id', async (req, res) => {
       bookData.apiRatings = ratingsData;
     }
 
-    console.log(bookData);
+    // console.log(bookData);
 
     res.render('details', { book: bookData, isFromApi: true });
 
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server Error");
+    res.render('error', { errorMessage: "Failed to fetch book details.", status:500 });
   }
 });
 
@@ -87,7 +87,7 @@ router.post('/save-book', checkAuth, async (req, res) => {
   let { title, author, cover_id, user_rating, review, olid, cover_url, description, year } = req.body;
 
   try {
-    
+
     const result = await db.query(
       'INSERT INTO books (title, author, cover_id, user_rating, review, olid, cover_url, description, year) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING title, user_rating', [
       title,
@@ -101,13 +101,13 @@ router.post('/save-book', checkAuth, async (req, res) => {
       year,
     ]);
 
-    console.log(result.rows);
+    // console.log(result.rows);
 
     res.redirect("/");
 
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server Error");
+    res.render('error', { errorMessage: "Failed to log book.", status:500 });
   }
 
 });
@@ -119,14 +119,14 @@ router.get('/edit-book/:id', async (req, res) => {
     const result = await db.query('SELECT * FROM books WHERE id = $1', [book_id]);
 
     if (result.rows.length === 0) {
-      return res.status(404).send("Book not found");
+      return res.render('error', { errorMessage: "Book not found.", status:404 });
     }
 
     res.render('edit-book.ejs', { book: result.rows[0] })
 
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server Error");
+    res.render('error', { errorMessage: "Oops, something went wrong.", status:500 });
   }
 });
 
@@ -142,12 +142,13 @@ router.post('/update/:id', checkAuth, async (req, res) => {
       req.body.review,
       bookId
     ]);
-    console.log(result.rows[0]);
+    // console.log(result.rows[0]);
 
     res.redirect(`/details/${bookId}`);
+  
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server Error");
+    res.render('error', { errorMessage: "Failed to update book.", status:500 });
   }
 });
 
@@ -157,12 +158,12 @@ router.post('/delete/:id', checkAuth, async (req, res) => {
 
   try {
     const result = await db.query('DELETE FROM books WHERE id = $1 RETURNING id, title', [bookId]);
-    console.log(result.rows);
+    // console.log(result.rows);
     res.redirect('/');
 
   } catch (error) {
     console.log(error);
-    res.status(500).send("Internal Server Error");
+    res.render('error', { errorMessage: "Unable to delete book.", status:500 });
   }
 });
 
