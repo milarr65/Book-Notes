@@ -21,8 +21,12 @@
                             <% } else {%>
                                 <a href="/edit-book/<%= book.id %>" class="btn btn-primary mt-2 title">Edit</a>
                                 <form action="/delete/<%= book.id %>" method="post">
-                                    <button class="btn btn-primary mt-2 title" type="submit"
-                                        onclick="return confirm('Are you sure?')">Delete</button>
+                                    <button 
+                                    class="btn btn-primary mt-2 title" 
+                                    type="submit"
+                                    onclick="return confirm('Are you sure?')">
+                                    Delete
+                                    </button>
                                 </form>
                                 <% } %>
                     </div>

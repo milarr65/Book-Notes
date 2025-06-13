@@ -18,7 +18,7 @@ router.get('/search', async (req, res) => {
     const results = await searchAPI(query); // Search results using my function
 
     if (results.length === 0) {
-      res.send("Error fetching search results.")
+      res.render('error', { errorMessage: "Failed to fetch search results.", status:500 });
     } else {
       res.render('search', { results })
 
@@ -26,7 +26,7 @@ router.get('/search', async (req, res) => {
 
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error fetching search results');
+    res.render('error', { errorMessage: "Failed to fetch search results.", status:500 });
   }
 
 
@@ -49,7 +49,7 @@ async function searchAPI(query) {
     // access data from result
     const found_books = result.data.docs;
 
-    console.log('total results: ', found_books.length);
+    console.log('total results for: ' + query + found_books.length);
 
     // Map obtained info into the desired format
     const data = found_books.map(book => ({
@@ -65,7 +65,7 @@ async function searchAPI(query) {
     return data
 
   } catch (error) {
-    console.log(error);
+    console.log("SearchApi error: ",error);
     return [];
 
   }

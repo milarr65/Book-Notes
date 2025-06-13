@@ -1,0 +1,13 @@
+<%- include('partials/header.ejs', { activePage: '' }) %>
+
+  <div class="myContainer" style="height: 70vh; align-items: center; gap: 0; flex-direction: column;">
+    <i class="fa-solid fa-face-frown" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+    <div class="title" style="font-weight: 480; display: flex; flex-direction: column; text-align: center;">
+      <h3>Error <%= status %></h3>
+      <h3>
+        <%= errorMessage %>
+      </h3>
+    </div>
+  </div>
+
+  <%- include('partials/footer.ejs') %>

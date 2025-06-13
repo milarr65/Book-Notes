@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     const sortBy = req.query.sort || 'recent';
     let orderBy = 'created_at DESC';
 
-    console.log('sort by: ' + sortBy);
+    // console.log('sort by: ' + sortBy);
 
 
     if (sortBy === 'title') {
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 
     } catch (error) {
         console.log('Error loading books: ', error);
-        res.render("index.ejs", { books: [], sortBy, activePage: "home", error: true });
+        res.render('error', { errorMessage: "Failed to load books.", status:500 });
     }
 });
 
