@@ -42,8 +42,8 @@ app.get('/', async (req, res) => {
         res.render('index.ejs', { books, sortBy, activePage: "home" })
 
     } catch (error) {
-        console.log(error);
-        res.status(500).send("Internal Server Error");
+        console.log('Error loading books: ', error);
+        res.render("index.ejs", { books: [], sortBy, activePage: "home", error: true });
     }
 });
 

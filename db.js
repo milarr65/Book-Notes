@@ -3,7 +3,9 @@ import env from "dotenv";
 
 env.config()
 
-const db = new pg.Client({
+const { Pool } = pg;
+
+const db = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false,
