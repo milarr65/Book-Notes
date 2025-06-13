@@ -82,11 +82,11 @@
 
     </div>
 
-     <!---------------- IN CASE OF AN ERROR WITH DATABASE idk -------------->
-    <% if (error) { %>
+    <!---------------- IN CASE OF AN ERROR WITH DATABASE idk -------------->
+    <% if (locals.error) { %>
         <div class="myContainer">
             <div class="error">Failed to fetch books.</div>
         </div>
         <% } %>
 
-    <%- include('partials/footer.ejs') %>
+            <%- include('partials/footer.ejs') %>
