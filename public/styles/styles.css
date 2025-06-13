@@ -2,349 +2,352 @@
 @import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap");
 
 :root {
-    /* CSS HEX */
-    --marian-blue: rgb(85, 32, 160);
-    --glaucous: #6883baff;
-    --seasalt: #f9f9f9ff;
-    --thulian-pink: #e072a4ff;
-    --celadon: rgb(88, 221, 128);
+	/* CSS HEX */
+	--marian-blue: rgb(85, 32, 160);
+	--glaucous: #6883baff;
+	--seasalt: #f9f9f9ff;
+	--thulian-pink: #e072a4ff;
+	--celadon: rgb(88, 221, 128);
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: rgb(243 243 243);
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	background-color: rgb(243 243 243);
 }
 
 /* bricolage grotesque font variable
 <weight>: Use a value from 200 to 800
 <uniquifier>: Use a unique and descriptive class name */
 .title {
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
-    font-style: normal;
-    font-variation-settings: "wdth" 100;
+	font-family: "Bricolage Grotesque", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 600;
+	font-style: normal;
+	font-variation-settings: "wdth" 100;
 }
 
 .text {
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-variation-settings: "wdth" 100;
+	font-family: "Bricolage Grotesque", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+	font-variation-settings: "wdth" 100;
 }
 
 button,
 a,
 p,
 h2 {
-    all: unset;
-    background: transparent; /* Remove background */
-    border: none; /* Remove border */
-    padding: 0; /* Remove padding */
-    font: inherit; /* Use the same font as parent */
-    color: inherit; /* Inherit text color */
-    outline: none; /* Remove the focus outline */
+	all: unset;
+	background: transparent; /* Remove background */
+	border: none; /* Remove border */
+	padding: 0; /* Remove padding */
+	font: inherit; /* Use the same font as parent */
+	color: inherit; /* Inherit text color */
+	outline: none; /* Remove the focus outline */
 }
 
 .my-links,
 .description a {
-    color: var(--marian-blue);
-    cursor: pointer;
-    font-weight: 800;
+	color: var(--marian-blue);
+	cursor: pointer;
+	font-weight: 800;
 }
 
 .my-links:hover,
 .description a:hover {
-    color: var(--glaucous);
+	color: var(--glaucous);
 }
 
 .myContainer,
 .myContainer-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* Centers the cards horizontally */
-    gap: 1.5rem; /* Space between cards */
-    padding: 0;
-    margin: 1rem 2rem;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center; /* Centers the cards horizontally */
+	gap: 1.5rem; /* Space between cards */
+	padding: 0;
+	margin: 1rem 2rem;
 }
 
 .form-container,
 .card > form,
 .nav-links,
 .name-logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: fit-content;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: fit-content;
 }
 
 h3.title {
-    width: 100%;
-    text-align: center;
-    font-weight: 800;
-    font-size: 1.5rem;
+	width: 100%;
+	text-align: center;
+	font-weight: 800;
+	font-size: 1.5rem;
 }
 
 h1 {
-    font-size: calc(1.375rem + 1.1vw) !important;
+	font-size: calc(1.375rem + 1.1vw) !important;
 }
 
 /************* Cards *****************/
 .cards-container {
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    flex-direction: row;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	flex-direction: row;
 }
 
 .card {
-    width: 208px;
-    height: fit-content;
-    min-height: 460px;
-    border-radius: 15px;
-    gap: 15px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin: 0.5rem; /* Optional for spacing between cards */
-    background-color: var(--seasalt);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 8px;
+	width: 208px;
+	height: fit-content;
+	min-height: 460px;
+	border-radius: 15px;
+	gap: 15px;
+	overflow: hidden;
+	position: relative;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	margin: 0.5rem; /* Optional for spacing between cards */
+	background-color: var(--seasalt);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 8px;
 }
 
 .card:hover {
-    transform: translateY(-10px);
+	transform: translateY(-10px);
 }
 
 /* book cover */
 .card-img {
-    position: relative;
-    width: 95%;
-    height: 70%;
-    background-position: center;
-    display: flex;
-    align-items: center;
+	position: relative;
+	width: 95%;
+	height: 70%;
+	background-position: center;
+	display: flex;
+	align-items: center;
 }
 
 .card-img img,
 .backdrop img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 15px;
 }
 
 .book-info {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
-    row-gap: 5px;
-    margin-bottom: 5px;
-    text-align: center;
-    height: 30%;
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: column;
+	row-gap: 5px;
+	margin-bottom: 5px;
+	text-align: center;
+	height: 30%;
 }
 
 .book-info > a {
-    width: fit-content;
+	width: fit-content;
 }
-
-
 
 /*********** About Page **************/
 .made-with {
-    display: flex;
-    justify-content: center;
-    gap: 100px;
-    width: 100%;
-    height: 5rem;
+	display: flex;
+	justify-content: center;
+	gap: 100px;
+	width: 100%;
+	height: 5rem;
 }
 
 .made-with img {
-    height: 95%;
-    width: auto;
+	height: 95%;
+	width: auto;
 }
-
 
 /* ************** HEADER PAGE *************** */
 .navbar {
-    margin-bottom: 25px;
+	margin-bottom: 25px;
 }
 
 .nav-item,
 .navbar-brand {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 /* ************** FOOTER PAGE *************** */
 footer {
-    margin-top: 2rem;
-    padding: 1.5rem 3rem !important;
-    text-align: center;
-    bottom: 0;
+	margin-top: 2rem;
+	padding: 1.5rem 3rem !important;
+	text-align: center;
+	bottom: 0;
 }
 
 /* ************** INDEX PAGE *************** */
 .sort-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 2.6rem;
-    padding: 0 2.5rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 2.6rem;
+	padding: 0 2.5rem;
 }
 
 .sort-menu {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    width: max-content;
-    align-items: baseline;
-    gap: 5px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	width: max-content;
+	align-items: baseline;
+	gap: 5px;
 }
 .sort-menu label,
 .sort-menu select {
-    width: max-content;
+	width: max-content;
 }
 
 /* ************** EDIT AND ADD PAGE *************** */
 .add-form {
-    display: flex;
-    flex-direction: row;
-    width: 50%;
-    height: max-content;
-    justify-content: center;
+	display: flex;
+	flex-direction: row;
+	width: 50%;
+	height: max-content;
+	justify-content: center;
 }
 
 .add-form .card-img {
-    height: 370px;
-    width: auto;
+	height: 370px;
+	width: auto;
 }
 
 .form-fields {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 .form-fields label {
-    font-weight: 700;
-    font-size: 1.2rem;
+	font-weight: 700;
+	font-size: 1.2rem;
 }
 
 .form-fields input,
 .form-fields select {
-    margin-bottom: 6px;
+	margin-bottom: 6px;
 }
 
 textarea {
-    font-family: "Bricolage Grotesque", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    font-variation-settings: "wdth" 100;
-    height: 104px;
-    background-color: var(--seasalt);
+	font-family: "Bricolage Grotesque", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 400;
+	font-style: normal;
+	font-variation-settings: "wdth" 100;
+	height: 104px;
+	background-color: var(--seasalt);
 }
 
 /* ************** DETAILS PAGE *************** */
 
 div.details {
-    display: flex;
-    flex-direction: row;
-    gap: 30px;
-    width: 100%;
-    justify-content: center;
+	display: flex;
+	flex-direction: row;
+	gap: 30px;
+	width: 100%;
+	justify-content: center;
 }
 
 .left-side {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    width: 30%;
-    align-items: center;
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+	width: 30%;
+	align-items: center;
 }
 
-.img-wrapper{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.img-wrapper {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-.img-wrapper img{
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
+.img-wrapper img {
+	object-fit: cover;
+	height: 100%;
+	width: 100%;
 }
 
 .details-img {
-    border-radius: 12px;
-    width: auto;
-    height: 75%;
+	border-radius: 12px;
+	width: auto;
+	height: 75%;
 }
 
 .details-buttons,
 .form-buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 7px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 7px;
 }
 
 .details-buttons a {
-    width: 50%;
+	width: 50%;
 }
 
 .right-side {
-    width: 60%;
-    flex-direction: column;
-    text-align: left;
-    justify-content: flex-start;
-    display: flex;
-    gap: 35px;
+	width: 60%;
+	flex-direction: column;
+	text-align: left;
+	justify-content: flex-start;
+	display: flex;
+	gap: 35px;
 }
 
 .description {
-    text-align: left;
-    justify-content: flex-start;
+	text-align: left;
+	justify-content: flex-start;
 }
 
 .description-text {
-    max-height: 85px;
-    /* overflow: hidden; */
-    position: relative;
-    transition: max-height 0.3s ease-in-out;
-    width: 612px;
+	max-height: 85px;
+	/* overflow: hidden; */
+	position: relative;
+	transition: max-height 0.3s ease-in-out;
+	width: 612px;
 }
 
 .description-text p {
-    max-width: 95% !important;
+	max-width: 95% !important;
 }
 
 .hideContent {
-    display: -webkit-box;
-    -webkit-line-clamp: 6;
-    line-clamp: 6;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: auto;
+	display: -webkit-box;
+	-webkit-line-clamp: 6;
+	line-clamp: 6;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: auto;
 }
 
 .showContent {
-    max-height: none;
-    width: auto;
+	max-height: none;
+	width: auto;
 }
 
 .review {
-    text-align: left;
-    justify-content: flex-start;
+	text-align: left;
+	justify-content: flex-start;
+}
+
+.myContainer #login-form {
+	min-height: 300px;
+	min-width: 50%;
+	align-content: center;
 }

@@ -2,8 +2,7 @@ import express from 'express';
 import axios from 'axios';
 import db from '../db/db.js';
 import { marked } from "marked"; //converts markdown to html
-
-
+import checkAuth from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 const base_url = 'https://openlibrary.org' /* add .json at the end */
@@ -84,13 +83,13 @@ router.post('/add-book', async (req, res) => {
 });
 
 /* saves user's book to postgres database.*/
-router.post('/save-book', async (req, res) => {
+router.post('/save-book', checkAuth, async (req, res) => {
   let { title, author, cover_id, user_rating, review, olid, cover_url, description, year } = req.body;
 
   try {
-    const userId = req.user.id;
+    
     const result = await db.query(
-      'INSERT INTO books (title, author, cover_id, user_rating, review, olid, cover_url, description, year, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9. $10) RETURNING title, user_rating', [
+      'INSERT INTO books (title, author, cover_id, user_rating, review, olid, cover_url, description, year) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING title, user_rating', [
       title,
       author,
       cover_id,
@@ -100,7 +99,6 @@ router.post('/save-book', async (req, res) => {
       cover_url,
       description,
       year,
-      userId
     ]);
 
     console.log(result.rows);
@@ -134,7 +132,7 @@ router.get('/edit-book/:id', async (req, res) => {
 
 
 /* Update book in database */
-router.post('/update/:id', async (req, res) => {
+router.post('/update/:id', checkAuth, async (req, res) => {
   const bookId = req.params.id;
   try {
     const result = await db.query('UPDATE books SET title = $1, author = $2, user_rating = $3, review = $4 WHERE id = $5 RETURNING id, title', [
@@ -154,7 +152,7 @@ router.post('/update/:id', async (req, res) => {
 });
 
 /* Delete book from data base */
-router.post('/delete/:id', async (req, res) => {
+router.post('/delete/:id', checkAuth, async (req, res) => {
   const bookId = req.params.id;
 
   try {
