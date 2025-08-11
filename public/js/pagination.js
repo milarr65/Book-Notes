@@ -18,15 +18,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 const card = document.createElement("div");
                 card.className = "card book-card text-center";
                 card.innerHTML = `
-                    <div class="book-cover-container">
-                        
-                        <div class="search-cover-inner">
-                            
+                    <div class="book-cover-container">   
+                        <div class="search-cover-inner">                            
                             <div class="book-cover-front">
-                                <img src="${book.cover_url ? book.cover_url : '/assets/dummy-image-portrait.jpg'}"
-                                    alt="Book Cover" class="book-cover img-fluid">
-                            </div>
-                            
+                                <img src="${book.cover_url ? book.cover_url : '/assets/dummy-image-portrait.jpg'}" alt="Book Cover" class="book-cover img-fluid">
+                            </div>                            
                         </div>
                     </div>
 
@@ -39,10 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         </p>
 
                         <!-- More Info Button -->
-                        <form action="/details/${book.olid}" method="POST">
-  <input type="hidden" name="bookData" value="${encodeURIComponent(JSON.stringify(book))}">
-  <button class="btn btn-primary mt-2 title title" type="submit">Read More</button>
-</form>
+                        <form action="/details/${book.olid}" method="POST"> <input type="hidden" name="bookData" value="${encodeURIComponent(JSON.stringify(book))}"> <button class="btn btn-primary mt-2 title title" type="submit">Read More</button></form>
                     </div>
                 `;
 

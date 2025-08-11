@@ -51,7 +51,7 @@ h2 {
 
 .my-links,
 .description a {
-	color: var(--marian-blue);
+	color: #2b4ec2;
 	cursor: pointer;
 	font-weight: 800;
 }
