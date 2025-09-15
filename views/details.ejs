@@ -1,133 +1,134 @@
-<%- include('partials/header.ejs', { activePage: '' }) %>
-    <% if (locals.book) { %>
+<%- include('partials/header.ejs', { activePage: '' }) %> <% if (locals.book) {
+%>
 
-        <div class="myContainer">
-            <div class="details">
-                <div class="left-side">
-                    <!-- Book Cover -->
-                     <div class="img-wrapper">
-                    <img src="<%= book.cover_url ? book.cover_url 
-                : '/assets/dummy-image-portrait.jpg' %>" alt="Book Cover" class="details-img">
-                </div>
+<div class="myContainer">
+	<div class="details">
+		<div class="left-side">
+			<!-- Book Cover -->
+			<div class="img-wrapper">
+				<img
+					src="<%= book.cover_url ? book.cover_url 
+                : '/assets/dummy-image-portrait.jpg' %>"
+					alt="Book Cover"
+					class="details-img"
+				/>
+			</div>
 
-                    <!-- Buttons -->
-                    <div class="details-buttons">
-                        <% if (isFromApi) { %>
-                            <form action="/add-book" method="post">
-                                <input type="hidden" name="bookData"
-                                    value="<%= encodeURIComponent(JSON.stringify(book)) %>">
-                                <button class="btn btn-primary mt-2 title" type="submit">Add Book</button>
-                            </form>
-                            <% } else {%>
-                                <a href="/edit-book/<%= book.id %>" class="btn btn-primary mt-2 title">Edit</a>
-                                <form action="/delete/<%= book.id %>" method="post">
-                                    <button 
-                                    class="btn btn-primary mt-2 title" 
-                                    type="submit"
-                                    onclick="return confirm('Are you sure?')">
-                                    Delete
-                                    </button>
-                                </form>
-                                <% } %>
-                    </div>
-                </div>
+			<!-- Buttons -->
+			<div class="details-buttons">
+				<% if (isFromApi) { %>
+				<form action="/add-book" method="post">
+					<input
+						type="hidden"
+						name="bookData"
+						value="<%= encodeURIComponent(JSON.stringify(book)) %>"
+					/>
+					<button class="btn btn-primary mt-2 title" type="submit">
+						Add Book
+					</button>
+				</form>
+				<% } else {%>
+				<a href="/edit-book/<%= book.id %>" class="btn btn-primary mt-2 title"
+					>Edit</a
+				>
+				<form action="/delete/<%= book.id %>" method="post">
+					<button
+						class="btn btn-primary mt-2 title"
+						type="submit"
+						onclick="return confirm('Are you sure?')"
+					>
+						Delete
+					</button>
+				</form>
+				<% } %>
+			</div>
+		</div>
 
-                <!------------ Book Info --------------->
-                <div class="right-side">
-                    <div class="details-book-info">
-                        <h1 class="title">
-                            <%= book.title %>
-                                <%= book.year ? "(" + book.year + ")" : "" %>
-                        </h1>
-                        <p class="text">by <%= book.author %>
-                        </p>
+		<!------------ Book Info --------------->
+		<div class="right-side">
+			<div class="details-book-info">
+				<h1 class="title">
+					<%= book.title %> <%= book.year ? "(" + book.year + ")" : "" %>
+				</h1>
+				<p class="text">by <%= book.author %></p>
 
-                        <!--------------- Star Rating --------------->
-                        <div class="star-rating">
-                            <% if (book.apiRatings) { %>
-                                <%= book.apiRatings.average %>
-                                    <% for (let i=1; i <=5; i++) { %>
-                                        <% if (i <=book.apiRatings.average) { %>
-                                            <i class="fas fa-star filled-star"></i> <!-- Solid star -->
-                                            <% } else { %>
-                                                <i class="far fa-star empty-star"></i> <!-- Outlined star -->
-                                                <% } %>
-                                                    <% } %>
-                                                        <%= "( " + book.apiRatings.count + " reviews )" %>
+				<!--------------- Star Rating --------------->
+				<div class="star-rating">
+					<% if (book.apiRatings) { %> <%= book.apiRatings.average %> <% for
+					(let i=1; i <=5; i++) { %> <% if (i <=book.apiRatings.average) { %>
+					<i class="fas fa-star filled-star"></i>
+					<!-- Solid star -->
+					<% } else { %>
+					<i class="far fa-star empty-star"></i>
+					<!-- Outlined star -->
+					<% } %> <% } %> <%= "( " + book.apiRatings.count + " reviews )" %> <%
+					} else if (book.user_rating) { %> Rated <% for (let i=1; i <=5; i++) {
+					%> <% if (i <=book.user_rating) { %>
+					<!-- Solid star -->
+					<i class="fas fa-star filled-star"></i>
+					<% } else { %>
+					<!-- Outlined star -->
+					<i class="far fa-star empty-star"></i>
+					<% } %> <% } %> <% } %>
+				</div>
 
-                                                            <% } else if (book.user_rating) { %>
-                                                                Rated
-                                                                <% for (let i=1; i <=5; i++) { %>
-                                                                    <% if (i <=book.user_rating) { %>
-                                                                        <!-- Solid star -->
-                                                                        <i class="fas fa-star filled-star"></i>
-                                                                        <% } else { %>
-                                                                            <!-- Outlined star -->
-                                                                            <i class="far fa-star empty-star"></i>
-                                                                            <% } %>
-                                                                                <% } %>
-                                                                                    <% } %>
-                        </div>
+				<p class="text">
+					<%= book.created_at ? 'Added ' + book.created_at : '' %>
+				</p>
+			</div>
 
+			<div class="description">
+				<h4 class="title">Description</h4>
 
+				<!-- Only cut description if details come from my own database -->
+				<% if (!isFromApi) { %>
+				<div class="text description-text hideContent" id="description-text">
+					<%- book.description ? "
+					<div class="row" style="gap: 10px">" + book.description + "</div>
+					" : 'No description available' %>
+				</div>
+				<button class="my-links" onclick="showFullText()" id="myBtn">
+					Show more
+				</button>
 
-                        <p class="text">
-                            <%= book.created_at ? 'Added ' + book.created_at : '' %>
-                        </p>
-                    </div>
+				<% } else {%>
+				<div class="text">
+					<%- book.description ? "
+					<div class="row" style="gap: 10px">" + book.description + "</div>
+					" : 'No description available' %>
+				</div>
 
-                    <div class="description">
-                        <h4 class="title">Description</h4>
+				<% } %>
+			</div>
+			<div class="review">
+				<% if (book.review) { %>
+				<h4 class="title">My Thoughts</h4>
+				<p class="text">
+					<%= book.review ? book.review : 'No review available' %>
+				</p>
 
-                        <!-- Only cut description if details come from my own database -->
-                        <% if (!isFromApi) { %>
-                            <div class="text description-text hideContent" id="description-text">
-                                <%- book.description ? "<div class='row' style='gap: 10px;'>" + book.description
-                                    + "</div>" : 'No description available' %>
-                            </div>
-                            <button class="my-links" onclick="showFullText()" id="myBtn">Show more</button>
+				<% } %>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
 
-                            <% } else {%>
-                                <div class="text">
-                                    <%- book.description ? "<div class='row' style='gap: 10px;'>" + book.description
-                                        + "</div>" : 'No description available' %>
-                                </div>
+<script>
+	function showFullText() {
+		var content = document.getElementById("description-text");
+		var button = document.getElementById("myBtn");
 
-                                <% } %>
-                    </div>
-                    <div class="review">
-                        <% if (book.review) { %>
-                            <h4 class="title">My Thoughts</h4>
-                            <p class="text">
-                                <%= book.review ? book.review : 'No review available' %>
-                            </p>
+		if (content.classList.contains("hideContent")) {
+			content.classList.remove("hideContent");
+			content.classList.add("showContent");
+			button.innerHTML = "Show less";
+		} else {
+			content.classList.remove("showContent");
+			content.classList.add("hideContent");
+			button.innerHTML = "Show more";
+		}
+	}
+</script>
 
-                            <% } %>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-        <% } %>
-
-            <script>
-                function showFullText() {
-                    var content = document.getElementById("description-text");
-                    var button = document.getElementById("myBtn");
-
-                    if (content.classList.contains("hideContent")) {
-                        content.classList.remove("hideContent");
-                        content.classList.add("showContent");
-                        button.innerHTML = "Show less";
-                    } else {
-                        content.classList.remove("showContent");
-                        content.classList.add("hideContent");
-                        button.innerHTML = "Show more";
-                    }
-
-
-                }
-            </script>
-
-            <%- include('partials/footer.ejs') %>
+<%- include('partials/footer.ejs') %>

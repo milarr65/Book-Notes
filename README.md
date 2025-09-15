@@ -14,7 +14,7 @@ _Built with NodeJS, Express, Bootstrap and PostgreSQL._
 ## 💻 How to run this in your personal machine:
 
 > [!Note]
-> You will need to have [postgresql](https://www.postgresql.org/download) installed along with pgAdmin 4
+> You will need to have [PostgreSQL](https://www.postgresql.org/download) installed along with pgAdmin 4
 
 1. Git clone this repository
 

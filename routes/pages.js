@@ -15,7 +15,7 @@ router.get('/search', async (req, res) => {
   try {
     const query = req.query.q; // user's input
 
-    const results = await searchAPI(query); // Search results using my function
+    const results = await searchBooks(query); // Search results using my function
 
     if (results.length === 0) {
       res.render('error', { errorMessage: "Failed to fetch search results.", status: 500 });
@@ -33,7 +33,7 @@ router.get('/search', async (req, res) => {
 });
 
 //Use axios to send search query to Open Library API and return search results
-async function searchAPI(query) {
+async function searchBooks(query) {
 
   try {
     const result = await axios.get(search_url, {
@@ -58,7 +58,7 @@ async function searchAPI(query) {
       author: book.author_name ? book.author_name.join(', ') : 'Unknown',
       cover_id: book.cover_i || null,
       cover_url: book.cover_i ? `${covers_url}/id/${book.cover_i}-L.jpg` : null,
-      key: book.key, // Unique Open Library book key
+      key: book.key, // Unique Open Library book key eg: works/OL12345
       olid: book.key.substring(7),
     }));
 
