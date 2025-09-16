@@ -25,7 +25,7 @@ router.get('/search', async (req, res) => {
     }
 
   } catch (error) {
-    console.error(error);
+    console.error(error.status, error.data);
     res.render('error', { errorMessage: "Failed to fetch search results.", status: 500 });
   }
 
@@ -65,7 +65,7 @@ async function searchBooks(query) {
     return data
 
   } catch (error) {
-    console.log("SearchApi error: ", error);
+    console.log("SearchApi error: ", error.data);
     return [];
 
   }

@@ -38,42 +38,51 @@ router.post("/details/:book_id", async (req, res) => {
 	const book_id = req.params.book_id;
 	try {
 		const bookData = JSON.parse(decodeURIComponent(req.body.bookData)); // book object passed through a <form>
-		const result = await axios.get(`${base_url}/works/${book_id}.json`); // get book info from api
-		const ratingsQuery = await axios.get(
-			`${base_url}/works/${book_id}/ratings.json`
-		); // get book ratings from api
+		// get book info from api
+		try {
+			const result = await axios.get(`${base_url}/works/${book_id}.json`);
+			const ratingsQuery = await axios.get(
+				`${base_url}/works/${book_id}/ratings.json`
+			); // get book ratings from api
 
-		// access info
-		const ratingsData = ratingsQuery.data.summary;
-		const data = result.data;
+			// access info
+			const ratingsData = ratingsQuery.data.summary;
+			const data = result.data;
 
-		//check if book has description
-		if (data.description) {
-			// Access book description depending on the format it comes as
-			const description =
-				typeof data.description === "object"
-					? data.description.value
-					: data.description;
+			//check if book has description
+			if (data.description) {
+				// Access book description depending on the format it comes as
+				const description =
+					typeof data.description === "object"
+						? data.description.value
+						: data.description;
 
-			/*  add description to book's previous data. Make it html format in case it comes as markdown */
-			bookData.description = marked(description);
-		} else {
-			console.log("No description available.");
+				/*  add description to book's previous data. Make it html format in case it comes as markdown */
+				bookData.description = marked(description);
+			} else {
+				console.log("No description available.");
+			}
+
+			// check that ratings are not null and are int before adding to book object
+			if (
+				ratingsData &&
+				ratingsData.average != null &&
+				!isNaN(ratingsData.average)
+			) {
+				ratingsData.average = parseFloat(ratingsData.average).toFixed(1); // round ratings to 1 decimal
+				bookData.apiRatings = ratingsData;
+			}
+
+			// console.log(bookData);
+
+			res.render("details", { book: bookData, isFromApi: true });
+		} catch (apiError) {
+			console.error("Axios error:", apiError.message || apiError);
+			return res.render("error", {
+				errorMessage: "Failed to fetch book details from API.",
+				status: 502,
+			});
 		}
-
-		// check that ratings are not null and are int before adding to book object
-		if (
-			ratingsData &&
-			ratingsData.average != null &&
-			!isNaN(ratingsData.average)
-		) {
-			ratingsData.average = parseFloat(ratingsData.average).toFixed(1); // round ratings to 1 decimal
-			bookData.apiRatings = ratingsData;
-		}
-
-		// console.log(bookData);
-
-		res.render("details", { book: bookData, isFromApi: true });
 	} catch (error) {
 		console.log(error);
 		res.render("error", {
