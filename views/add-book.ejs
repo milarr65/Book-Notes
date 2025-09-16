@@ -1,50 +1,80 @@
 <%- include('partials/header.ejs', { activePage: '' }) %>
 
-    <div class="myContainer">
-        <div class="details">
-            <div class="left-side">
-                <img class="details-img" src=<%=book.cover_url ? book.cover_url : '/assets/dummy-image-portrait.jpg' %>
-                alt="Book Cover">
+<div class="myContainer">
+	<div class="details">
+		<div class="left-side">
+			<div class="img-wrapper">
+				<img class="details-img" src=<%=book.cover_url ? book.cover_url :
+				'/assets/dummy-image-portrait.jpg' %> alt="Book Cover">
+			</div>
+		</div>
+		<form action="/save-book" method="post" class="add-form text">
+			<div class="form-fields form-control">
+				<label class="title" for="title">Book Title</label>
+				<input
+					type="text"
+					name="title"
+					id="title"
+					value="<%= book.title %>"
+					readonly
+				/>
 
-            </div>
-            <form action="/save-book" method="post" class="add-form text">
+				<label class="title" for="author">Author</label>
+				<input
+					type="text"
+					name="author"
+					id="author"
+					value="<%= book.author %>"
+					readonly
+				/>
 
-                <div class="form-fields form-control">
+				<input
+					type="hidden"
+					id="cover_id"
+					name="cover_id"
+					value="<%= book.cover_id %>"
+				/>
+				<input type="hidden" id="olid" name="olid" value="<%= book.olid %>" />
+				<input
+					type="hidden"
+					id="cover_url"
+					name="cover_url"
+					value="<%= book.cover_url %>"
+				/>
+				<input
+					type="hidden"
+					id="description"
+					name="description"
+					value="<%= book.description %>"
+				/>
+				<input type="hidden" id="year" name="year" value="<%= book.year %>" />
 
-                    <label class="title" for="title">Book Title</label>
-                    <input type="text" name="title" id="title" value="<%= book.title %>" readonly>
+				<label class="title" for="user_rating">Star rating</label>
+				<select type="text" name="user_rating" id="user_rating" required>
+					<option value="">Rate it out of 5 stars</option>
+					<hr />
+					<option value="1">⭐</option>
+					<option value="2">⭐⭐</option>
+					<option value="3">⭐⭐⭐</option>
+					<option value="4">⭐⭐⭐⭐</option>
+					<option value="5">⭐⭐⭐⭐⭐</option>
+				</select>
 
-                    <label class="title" for="author">Author</label>
-                    <input type="text" name="author" id="author" value="<%= book.author %>" readonly>
+				<label class="title" for="review">Your review</label>
+				<textarea
+					type="text"
+					name="review"
+					id="review"
+					placeholder="Thoughts on this book?"
+				></textarea>
 
-                    <input type="hidden" id="cover_id" name="cover_id" value="<%= book.cover_id %>">
-                    <input type="hidden" id="olid" name="olid" value="<%= book.olid %>">
-                    <input type="hidden" id="cover_url" name="cover_url" value="<%= book.cover_url %>">
-                    <input type="hidden" id="description" name="description" value="<%= book.description %>">
-                    <input type="hidden" id="year" name="year" value="<%= book.year %>">
-
-                    <label class="title" for="user_rating">Star rating</label>
-                    <select type="text" name="user_rating" id="user_rating" required>
-                        <option value="">Rate it out of 5 stars</option>
-                        <hr />
-                        <option value="1">⭐</option>
-                        <option value="2">⭐⭐</option>
-                        <option value="3">⭐⭐⭐</option>
-                        <option value="4">⭐⭐⭐⭐</option>
-                        <option value="5">⭐⭐⭐⭐⭐</option>
-                    </select>
-
-                    <label class="title" for="review">Your review</label>
-                    <textarea type="text" name="review" id="review" placeholder="Thoughts on this book?"></textarea>
-
-                    <div class="form-buttons">
-                        <button class="btn btn-primary mt-2 title" type="submit">Add book</button>
-
-                    </div>
-                </div>
-            </form>
-        </div>
-
-
-    </div>
-    <%- include('partials/footer.ejs') %>
+				<div class="form-buttons">
+					<button class="btn btn-primary mt-2 title" type="submit">
+						Add book
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<%- include('partials/footer.ejs') %>

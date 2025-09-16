@@ -81,10 +81,10 @@
 
 				<!-- Only cut description if details come from my own database -->
 				<div class="text description-text <%= isFromApi ? "" : "hideContent" %>" id="description-text">
-					<div class="row" style="gap: 10px">
+
 						<%- book.description ? book.description : "No description available"
 						%>
-					</div>
+
 				</div>
 				<% if (!isFromApi) { %>
 				<button class="my-links" onclick="showFullText()" id="myBtn">
@@ -92,15 +92,15 @@
 				</button>
 				<% } %>
 
+			</div>
+			<% if (book.review) { %>
 				<div class="review">
-					<% if (book.review) { %>
-					<h4 class="title">My Thoughts</h4>
-					<p class="text">
-						<%= book.review ? book.review : 'No review available' %>
-					</p>
+				<h4 class="title">My Thoughts</h4>
+				<p class="text">
+					<%= book.review ? book.review : 'No review available' %>
+				</p>
 
-					<% } %>
-				</div>
+				<% } %>
 			</div>
 		</div>
 	</div>
