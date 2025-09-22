@@ -6,8 +6,8 @@
 			<!-- Book Cover -->
 			<div class="img-wrapper">
 				<% const imgSrc = book.cover_url ? book.cover_url :
-				"/assets/dummy-image-portrait.jpg"%>
-				<img src=<%= imgSrc %> alt="Book Cover" class="details-img" />
+				'/assets/dummy-image-portrait.jpg' %>
+				<img src="<%= imgSrc %>" alt="Book Cover" class="details-img" />
 			</div>
 
 			<!-- Buttons -->
@@ -19,20 +19,23 @@
 						name="bookData"
 						value="<%= encodeURIComponent(JSON.stringify(book)) %>"
 					/>
-					<button class="btn btn-primary mt-2 title" type="submit">
+					<button class="btn-soft mt-2 title" type="submit">
+						<i data-lucide="Plus"></i>
 						Add Book
 					</button>
 				</form>
 				<% } else {%>
-				<a href="/edit-book/<%= book.id %>" class="btn btn-primary mt-2 title">
+				<a href="/edit-book/<%= book.id %>" class="btn-soft mt-2 title">
+					<i data-lucide="Pencil"></i>
 					Edit
 				</a>
 				<form action="/delete/<%= book.id %>" method="post">
 					<button
-						class="btn btn-primary mt-2 title"
+						class="btn-soft mt-2 title"
 						type="submit"
 						onclick="return confirm('Are you sure?')"
 					>
+						<i data-lucide="Trash2"></i>
 						Delete
 					</button>
 				</form>
@@ -42,37 +45,37 @@
 
 		<!------------ Book Info --------------->
 		<div class="right-side">
-			<div class="details-book-info">
+			<div class="info">
 				<h1 class="title">
-					<%= book.title %> <%= book.year ? "(" + book.year + ")" : "" %>
+					<%= book.title %>
+					<span style="font-size: 1.3rem">
+						<%= book.year ? `(${book.year})` : "" %>
+					</span>
 				</h1>
 				<p class="text">by <%= book.author %></p>
 
 				<!--------------- Star Rating --------------->
 				<div class="star-rating">
-					<% let rating = null; let ratingText = ''; 
-					if (book.apiRatings) {
-						rating = Math.round(book.apiRatings.average); 
-						ratingText = book.apiRatings.average + " (" + book.apiRatings.count + " reviews)";
-					} else if (book.user_rating) { 
-						rating = Math.round(book.user_rating);
-						ratingText = "Rated"; 
-					} 
-					%> 
-				<% if (rating !== null) { %> 
-					<%= ratingText %> 
-					<% for (let i = 1; i <= 5; i++) { %> 
-						<% if (i <= rating) { %>
-							<i class="fas fa-star filled-star"></i>
+					<% if (book.apiRatings) { %>
+					<i data-lucide="Star" style="fill: var(--celadon)"></i>
+					<span>
+						Rated <%= book.apiRatings.average %> (<%= book.apiRatings.count %>
+						reviews)
+					</span>
 					<% } else { %>
-					<i class="far fa-star empty-star"></i>
-					<% } %> 
-					<% } %> 
+					<span>Rated <%= book.user_rating %>/5</span>
+					<span class="stars stars-<%= book.user_rating %>">
+						<i data-lucide="Star"></i>
+						<i data-lucide="Star"></i>
+						<i data-lucide="Star"></i>
+						<i data-lucide="Star"></i>
+						<i data-lucide="Star"></i>
+					</span>
 					<% } %>
 				</div>
 
 				<p class="text">
-					<%= book.created_at ? 'Added ' + book.created_at : '' %>
+					<%= book.created_at ? 'Added on ' + book.created_at : '' %>
 				</p>
 			</div>
 
@@ -80,21 +83,16 @@
 				<h4 class="title">Description</h4>
 
 				<!-- Only cut description if details come from my own database -->
-				<div class="text description-text <%= isFromApi ? "" : "hideContent" %>" id="description-text">
-
-						<%- book.description ? book.description : "No description available"
-						%>
-
+				<div class="text description-text" id="description-text">
+					<%- book.description ? book.description : "No description available"
+					%>
 				</div>
-				<% if (!isFromApi) { %>
-				<button class="my-links" onclick="showFullText()" id="myBtn">
-					Show more
+				<button class="text btn-soft" id="expandBtn">
+					Expand <i class="fa-solid fa-chevron-down"></i>
 				</button>
-				<% } %>
-
 			</div>
 			<% if (book.review) { %>
-				<div class="review">
+			<div class="review">
 				<h4 class="title">My Thoughts</h4>
 				<p class="text">
 					<%= book.review ? book.review : 'No review available' %>
@@ -106,20 +104,41 @@
 	</div>
 
 	<script>
-		function showFullText() {
-			var content = document.getElementById("description-text");
-			var button = document.getElementById("myBtn");
+		const isFromApi = <%= JSON.stringify(isFromApi) %>;
+		console.log("Is from API:", isFromApi);
+		const content = document.getElementById("description-text");
+		const button = document.getElementById("expandBtn");
 
-			if (content.classList.contains("hideContent")) {
-				content.classList.remove("hideContent");
-				content.classList.add("showContent");
-				button.innerHTML = "Show less";
-			} else {
-				content.classList.remove("showContent");
-				content.classList.add("hideContent");
-				button.innerHTML = "Show more";
-			}
-		}
+		document.addEventListener("DOMContentLoaded", function(){
+			// expand DIV when isFromApi === true OR div height < 105 pixels
+				if (content) {
+					if (isFromApi || content.offsetHeight <= 105) {
+						content.classList.remove("hideContent")
+						button.style.display = "none";
+					}
+
+					if (!isFromApi && content.offsetHeight > 105){
+						content.classList.add("hideContent")
+						button.style.display = "flex"
+					} else {
+						button.style.display = "none"
+					}
+					// when isFromApi === false AND div has class hideContent i have to show the button
+					if (!isFromApi && content.classList.contains("hideContent")){
+						button.style.display = "flex";
+					}
+				}
+			})
+			// handle button click -> show or hide content depending on classes
+			button.addEventListener("click", function(){
+				if (content.classList.contains("hideContent")){
+							content.classList.replace("hideContent", "showContent")
+							button.innerHTML = "Collapse <i class='fa-solid fa-chevron-up'></i>";
+						} else {
+							content.classList.replace("showContent", "hideContent")
+							button.innerHTML = "Expand <i class='fa-solid fa-chevron-down'></i>";
+						}
+					})
 	</script>
 </div>
 <%- include('partials/footer.ejs') %>

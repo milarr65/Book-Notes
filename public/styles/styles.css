@@ -8,6 +8,7 @@
 	--seasalt: #f9f9f9ff;
 	--thulian-pink: #e072a4ff;
 	--celadon: rgb(88, 221, 128);
+	--celadon-values: 88, 221, 128;
 }
 
 body {
@@ -82,7 +83,7 @@ h2 {
 	flex-wrap: wrap;
 	justify-content: center; /* Centers the cards horizontally */
 	gap: 1.5rem; /* Space between cards */
-	padding: 1rem 2rem;
+	padding: 0 1rem;
 	width: 100%;
 }
 
@@ -205,6 +206,12 @@ footer {
 	text-align: center;
 }
 
+.about-text > p {
+	margin-bottom: 3rem;
+	max-width: 860px;
+	text-align: center;
+}
+
 /* ************** INDEX PAGE *************** */
 .sort-container {
 	display: flex;
@@ -313,6 +320,10 @@ div.details {
 	width: 50%;
 }
 
+.details-buttons .lucide {
+	width: 1.2rem;
+}
+
 .right-side {
 	width: 70%;
 	flex-direction: column;
@@ -320,6 +331,10 @@ div.details {
 	justify-content: flex-start;
 	display: flex;
 	gap: 3rem;
+}
+
+.right-side .info {
+	font-size: 1.2rem;
 }
 
 .description {
@@ -342,8 +357,10 @@ div.details {
 }
 
 .hideContent {
-	max-height: 85px;
+	max-height: 105px;
 	overflow: hidden;
+	mask-image: linear-gradient(to top, transparent, white 75%);
+	-webkit-mask-image: linear-gradient(to top, transparent, white 75%);
 }
 
 .showContent {
@@ -360,4 +377,44 @@ div.details {
 	min-height: 300px;
 	min-width: 50%;
 	align-content: center;
+}
+
+.btn-soft {
+	border: 1px solid var(--celadon);
+	padding: 0.3rem 0.5rem;
+	border-radius: 0.7rem;
+	background-color: rgba(var(--celadon-values), 0.2);
+	font-weight: 500;
+	font-size: 0.87rem;
+	transition: all ease-in-out 0.2s;
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	margin-top: 1rem;
+	cursor: pointer;
+}
+
+.btn-soft:hover {
+	background-color: var(--celadon);
+}
+
+.star-rating {
+	display: flex;
+	flex-direction: row;
+	gap: 0.6rem;
+	align-items: center;
+}
+
+.stars .lucide,
+.star-rating .lucide {
+	stroke: var(--celadon);
+	vertical-align: sub;
+}
+
+.stars-1 svg.lucide:nth-child(-n + 1),
+.stars-2 svg.lucide:nth-child(-n + 2),
+.stars-3 svg.lucide:nth-child(-n + 3),
+.stars-4 svg.lucide:nth-child(-n + 4),
+.stars-5 svg.lucide:nth-child(-n + 5) {
+	fill: var(--celadon);
 }

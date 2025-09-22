@@ -16,13 +16,13 @@ router.get("/details/:book_id", async (req, res) => {
 		const book = result.rows[0];
 		const date = new Date(book.created_at); // Convert string to Date object
 
-		const formattedDate = date.toLocaleDateString("en-US", {
+		const formatedDate = date.toLocaleDateString("en-US", {
 			year: "numeric",
 			month: "long",
 			day: "numeric",
 		});
 
-		book.created_at = formattedDate;
+		book.created_at = formatedDate;
 		res.render("details", { book, isFromApi: false });
 	} catch (error) {
 		console.log(error);
@@ -33,6 +33,25 @@ router.get("/details/:book_id", async (req, res) => {
 	}
 });
 
+async function getApiRatings(bookId) {
+	try {
+		const response = await axios.get(
+			`${base_url}/works/${bookId}/ratings.json`
+		);
+		const data = response.data.summary;
+		let average = 0;
+		const count = data.count || 0;
+		if (data && data.average != null && !isNaN(data.average)) {
+			average = parseFloat(data.average.toFixed(1)) || 0; // round ratings to 1 decimal
+		}
+		// console.log({count, average})
+		return { count, average };
+	} catch (error) {
+		console.log("Error fetching book ratings: ", error);
+		return { count: 0, average: 0 };
+	}
+}
+
 /* Recieves book object from search results and renders details page */
 router.post("/details/:book_id", async (req, res) => {
 	const book_id = req.params.book_id;
@@ -41,18 +60,11 @@ router.post("/details/:book_id", async (req, res) => {
 		// get book info from api
 		try {
 			const result = await axios.get(`${base_url}/works/${book_id}.json`);
-			const ratingsQuery = await axios.get(
-				`${base_url}/works/${book_id}/ratings.json`
-			); // get book ratings from api
-
-			// access info
-			const ratingsData = ratingsQuery.data.summary;
 			const data = result.data;
 
-			//check if book has description
+			// check if book has description
 			if (data.description) {
-				// Access book description depending on the format it comes as
-				const description =
+				const description = // Access book description depending on the format it comes as
 					typeof data.description === "object"
 						? data.description.value
 						: data.description;
@@ -63,18 +75,9 @@ router.post("/details/:book_id", async (req, res) => {
 				console.log("No description available.");
 			}
 
-			// check that ratings are not null and are int before adding to book object
-			if (
-				ratingsData &&
-				ratingsData.average != null &&
-				!isNaN(ratingsData.average)
-			) {
-				ratingsData.average = parseFloat(ratingsData.average).toFixed(1); // round ratings to 1 decimal
-				bookData.apiRatings = ratingsData;
-			}
-
-			// console.log(bookData);
-
+			bookData.apiRatings = await getApiRatings(book_id);
+			console.log(bookData.apiRatings);
+			
 			res.render("details", { book: bookData, isFromApi: true });
 		} catch (apiError) {
 			console.error("Axios error:", apiError.message || apiError);

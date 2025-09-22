@@ -52,5 +52,10 @@
 	.add-form {
 		width: 100%;
 	}
-
+	
+	/********* About page *********/
+	.about-text > p, .made-with {
+		max-width: 90%;
+		text-align: left;
+	}
 }
