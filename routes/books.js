@@ -2,213 +2,73 @@ import express from "express";
 import axios from "axios";
 import db from "../db/db.js";
 import { marked } from "marked"; //converts markdown to html
+import { getBook } from "../lib/api.js";
+import { getBookById } from "../lib/queries.js";
 
 const router = express.Router();
 const base_url = "https://openlibrary.org"; /* add .json at the end */
 
-// Get book from database and render details page
-router.get("/details/:book_id", async (req, res) => {
-	const book_id = req.params.book_id;
-	try {
-		const result = await db.query("SELECT * FROM books WHERE id = $1", [
-			book_id,
-		]);
-		const book = result.rows[0];
-		const date = new Date(book.created_at); // Convert string to Date object
-
-		const formatedDate = date.toLocaleDateString("en-US", {
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-		});
-
-		book.created_at = formatedDate;
-		res.render("details", { book, isFromApi: false });
-	} catch (error) {
-		console.log(error);
-		res.render("error", {
-			errorMessage: "Failed to fetch book details.",
-			status: 500,
-		});
-	}
-});
-
-async function getApiRatings(bookId) {
-	try {
-		const response = await axios.get(
-			`${base_url}/works/${bookId}/ratings.json`
-		);
-		const data = response.data.summary;
-		let average = 0;
-		const count = data.count || 0;
-		if (data && data.average != null && !isNaN(data.average)) {
-			average = parseFloat(data.average.toFixed(1)) || 0; // round ratings to 1 decimal
-		}
-		// console.log({count, average})
-		return { count, average };
-	} catch (error) {
-		console.log("Error fetching book ratings: ", error);
-		return { count: 0, average: 0 };
-	}
-}
-
-/* Recieves book object from search results and renders details page */
-router.post("/details/:book_id", async (req, res) => {
-	const book_id = req.params.book_id;
-	try {
-		const bookData = JSON.parse(decodeURIComponent(req.body.bookData)); // book object passed through a <form>
-		// get book info from api
-		try {
-			const result = await axios.get(`${base_url}/works/${book_id}.json`);
-			const data = result.data;
-
-			// check if book has description
-			if (data.description) {
-				const description = // Access book description depending on the format it comes as
-					typeof data.description === "object"
-						? data.description.value
-						: data.description;
-
-				/*  add description to book's previous data. Make it html format in case it comes as markdown */
-				bookData.description = marked(description);
-			} else {
-				console.log("No description available.");
-			}
-
-			bookData.apiRatings = await getApiRatings(book_id);
-			console.log(bookData.apiRatings);
-			
-			res.render("details", { book: bookData, isFromApi: true });
-		} catch (apiError) {
-			console.error("Axios error:", apiError.message || apiError);
-			return res.render("error", {
-				errorMessage: "Failed to fetch book details from API.",
-				status: 502,
-			});
-		}
-	} catch (error) {
-		console.log(error);
-		res.render("error", {
-			errorMessage: "Failed to fetch book details.",
-			status: 500,
-		});
-	}
-});
-
-// Recieve book object passed through a form and uses it to pre-fill add form
-router.post("/add-book", async (req, res) => {
-	const book = JSON.parse(decodeURIComponent(req.body.bookData));
-	res.render("add-book", { book });
-});
-
-/* saves user's book to postgres database.*/
-router.post("/save-book", async (req, res) => {
-	let {
-		title,
-		author,
-		cover_id,
-		user_rating,
-		review,
-		olid,
-		cover_url,
-		description,
-		year,
-	} = req.body;
-
-	try {
-		const result = await db.query(
-			"INSERT INTO books (title, author, cover_id, user_rating, review, olid, cover_url, description, year) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING title, user_rating",
-			[
-				title,
-				author,
-				cover_id,
-				user_rating,
-				review,
-				olid,
-				cover_url,
-				description,
-				year,
-			]
-		);
-
-		// console.log(result.rows);
-
-		res.redirect("/");
-	} catch (error) {
-		console.log(error);
-		res.render("error", { errorMessage: "Failed to log book.", status: 500 });
-	}
-});
-
-/* Render edit form pre-filled with existing data */
-router.get("/edit-book/:id", async (req, res) => {
-	const book_id = req.params.id;
-	try {
-		const result = await db.query("SELECT * FROM books WHERE id = $1", [
-			book_id,
-		]);
-
-		if (result.rows.length === 0) {
-			return res.render("error", {
-				errorMessage: "Book not found.",
-				status: 404,
-			});
-		}
-
-		res.render("edit-book.ejs", { book: result.rows[0] });
-	} catch (error) {
-		console.log(error);
-		res.render("error", {
-			errorMessage: "Oops, something went wrong.",
-			status: 500,
-		});
-	}
-});
-
-/* Update book in database */
-router.post("/update/:id", async (req, res) => {
+// ---- TEST ----
+router.get("/book/:id", async (req, res) => {
 	const bookId = req.params.id;
-	try {
-		const result = await db.query(
-			"UPDATE books SET title = $1, author = $2, user_rating = $3, review = $4 WHERE id = $5 RETURNING id, title",
-			[
-				req.body.title,
-				req.body.author,
-				req.body.user_rating,
-				req.body.review,
-				bookId,
-			]
-		);
-		// console.log(result.rows[0]);
+	// console.log("Book ID: ", bookId);
 
-		res.redirect(`/details/${bookId}`);
+	try {
+		if (bookId.includes("OL")) {
+			const book = await getBook("/works/" + bookId);
+			res.render("details", { book, isFromApi: true });
+		} else {
+			const book = await getBookById(bookId);
+			book.created_at = new Date(book.created_at).toLocaleDateString("en-US", {
+				day: "numeric",
+				month: "long",
+				year: "numeric",
+			});
+			// console.log(book.created_at);
+			res.render("details", { book, isFromApi: false });
+		}
 	} catch (error) {
-		console.log(error);
-		res.render("error", {
-			errorMessage: "Failed to update book.",
+		console.error(error);
+
+		res.status(500).render("error", {
+			errorMessage: "Something went wrong, failed to display book details.",
 			status: 500,
 		});
 	}
 });
 
-/* Delete book from data base */
-router.post("/delete/:id", async (req, res) => {
+router.get("/book/:id/add", async (req, res) => {
 	const bookId = req.params.id;
 
 	try {
-		const result = await db.query(
-			"DELETE FROM books WHERE id = $1 RETURNING id, title",
-			[bookId]
-		);
-		// console.log(result.rows);
-		res.redirect("/");
+		const book = await getBook("/work/" + bookId);
+		// console.log(book);
+		res.render("add-book", { book });
 	} catch (error) {
-		console.log(error);
-		res.render("error", {
-			errorMessage: "Unable to delete book.",
+		console.error(error);
+
+		res.status(500).render("error", {
+			errorMessage: "Something went wrong when trying to load add form",
 			status: 500,
 		});
 	}
 });
+
+router.get("/book/:id/edit", async (req, res) => {
+	try {
+		const book = await getBookById(req.params.id);
+		// console.log(book);
+
+		res.render("edit-book", { book });
+	} catch (error) {
+		console.error(error);
+
+		res.status(500).render("error", {
+			errorMessage: "Something went wrong when trying to load edit form",
+			status: 500,
+		});
+	}
+});
+
 
 export default router;

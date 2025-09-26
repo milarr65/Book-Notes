@@ -1,74 +1,63 @@
-import express from 'express';
-import axios from 'axios';
+import express from "express";
+import { searchBooks } from "../lib/api.js";
+import { getAllBooks } from "../lib/queries.js";
 
 const router = express.Router();
-const search_url = 'https://openlibrary.org/search.json';
-const covers_url = 'https://covers.openlibrary.org/b' /* add <key>-L.jpg */
 
-router.get('/about', (req, res) => {
-  res.render('about', { activePage: "about" });
+router.get("/", async (req, res) => {
+	//get sorting options from query. default to recently added
+	const sortBy = req.query.sort || "recent";
+	let orderBy = /* 'created_at DESC'; */ ["created_at", { ascending: false }];
+
+	// console.log('sort by: ' + sortBy);
+
+	if (sortBy === "title") {
+		orderBy = /* 'title ASC' */ ["title", { ascending: true }];
+	} else if (sortBy === "rating") {
+		orderBy = /* 'user_rating DESC NULLS LAST' */ [
+			"user_rating",
+			{ ascending: false, nullsFirst: false },
+		];
+	}
+	// console.log("Order By: ", orderBy);
+
+	try {
+		const result =
+			/* await db.query(`SELECT * FROM books ORDER BY ${orderBy}`); */ await getAllBooks(
+				orderBy
+			);
+		// console.log(result);
+
+		const books = result;
+		if (books.length <= 0) {
+			res.render("error", {
+				errorMessage: "Opps seems we couldn't find any books",
+				status: 500,
+			});
+		}
+
+		res.render("index.ejs", { books, sortBy, activePage: "home" });
+	} catch (error) {
+		console.error(error);
+		res.render("error", { errorMessage: "Failed to load books.", status: 500 });
+	}
 });
 
-// Render search results for user
-router.get('/search', async (req, res) => {
-
-  try {
-    const query = req.query.q; // user's input
-
-    const results = await searchBooks(query); // Search results using my function
-
-    if (results.length === 0) {
-      res.render('error', { errorMessage: "Failed to fetch search results.", status: 500 });
-    } else {
-      res.render('search', { results })
-
-    }
-
-  } catch (error) {
-    console.error(error.status, error.data);
-    res.render('error', { errorMessage: "Failed to fetch search results.", status: 500 });
-  }
-
-
+router.get("/about", (req, res) => {
+	res.render("about", { activePage: "about" });
 });
 
-//Use axios to send search query to Open Library API and return search results
-async function searchBooks(query) {
-
-  try {
-    const result = await axios.get(search_url, {
-      params: {
-        q: query,
-        fields: 'author_name,cover_i,title,subtitle,first_sentence,key,first_publish_year,ratings_count,edition_count,language',
-        language: 'eng',
-        mode: 'everything',
-        page: 1,
-      }
-    });
-
-    // access data from result
-    const found_books = result.data.docs;
-
-    console.log('total results for: ' + query + " " + found_books.length);
-
-    // Map obtained info into the desired format
-    const data = found_books.map(book => ({
-      title: book.title,
-      year: book.first_publish_year,
-      author: book.author_name ? book.author_name.join(', ') : 'Unknown',
-      cover_id: book.cover_i || null,
-      cover_url: book.cover_i ? `${covers_url}/id/${book.cover_i}-L.jpg` : null,
-      key: book.key, // Unique Open Library book key eg: works/OL12345
-      olid: book.key.substring(7),
-    }));
-
-    return data
-
-  } catch (error) {
-    console.log("SearchApi error: ", error.data);
-    return [];
-
-  }
-}
+router.get("/search", async (req, res) => {
+	try {
+		const results = await searchBooks(req.query.q);
+		res.render("search", { results });
+	} catch (error) {
+		console.error(error);
+		res.render("error", {
+			errorMessage: "Failed to fetch search results.",
+			status: 500,
+		});
+	}
+});
 
 export default router;
