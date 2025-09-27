@@ -31,6 +31,7 @@ body {
 	flex: 1;
 	align-items: center;
 	justify-content: center;
+	gap: 1rem;
 }
 
 /* bricolage grotesque font variable
@@ -57,12 +58,12 @@ a,
 p,
 h2 {
 	all: unset;
-	background: transparent; /* Remove background */
-	border: none; /* Remove border */
-	padding: 0; /* Remove padding */
-	font: inherit; /* Use the same font as parent */
-	color: inherit; /* Inherit text color */
-	outline: none; /* Remove the focus outline */
+	background: transparent;
+	border: none;
+	padding: 0;
+	font: inherit;
+	color: inherit;
+	outline: none;
 }
 
 .my-links,
@@ -109,39 +110,9 @@ h1 {
 }
 
 /************* Cards *****************/
-.cards-container {
-	width: 100%;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	flex-direction: row;
-}
-
-.card {
-	width: 208px;
-	height: fit-content;
-	min-height: 460px;
-	border-radius: 15px;
-	gap: 15px;
-	overflow: hidden;
-	position: relative;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	transition: transform 0.3s ease, box-shadow 0.3s ease;
-	margin: 0.5rem; /* Optional for spacing between cards */
-	background-color: var(--seasalt);
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: center;
-	padding: 12px 8px;
-}
-
-.card:hover {
-	transform: translateY(-10px);
-}
 
 /* book cover */
-.card-img {
+/* .card-img {
 	position: relative;
 	width: 95%;
 	height: 70%;
@@ -156,8 +127,8 @@ h1 {
 	height: 100%;
 	object-fit: cover;
 	border-radius: 15px;
-}
-
+} */
+/* 
 .book-info {
 	display: flex;
 	width: 100%;
@@ -172,7 +143,7 @@ h1 {
 
 .book-info > a {
 	width: fit-content;
-}
+} */
 
 /*********** About Page **************/
 .made-with {
@@ -290,7 +261,7 @@ div.details {
 	display: flex;
 	flex-direction: column;
 	gap: 0.6rem;
-	width: 30%;
+	width: fit-content;
 	align-items: center;
 }
 
@@ -301,6 +272,7 @@ div.details {
 	overflow: hidden;
 	border-radius: 12px;
 	width: 100%;
+	max-height: 400px;
 }
 
 .details-img {
@@ -392,6 +364,8 @@ div.details {
 	gap: 0.4rem;
 	margin-top: 1rem;
 	cursor: pointer;
+	justify-content: center;
+	width: fit-content;
 }
 
 .btn-soft:hover {
@@ -403,6 +377,7 @@ div.details {
 	flex-direction: row;
 	gap: 0.6rem;
 	align-items: center;
+	justify-content: center;
 }
 
 .stars .lucide,
@@ -417,4 +392,27 @@ div.details {
 .stars-4 svg.lucide:nth-child(-n + 4),
 .stars-5 svg.lucide:nth-child(-n + 5) {
 	fill: var(--celadon);
+}
+
+/* ---- SEARCH RESULTS PAGE ---- */
+.pagination-btn {
+	margin: 0 5px;
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background 0.2s, transform 0.2s;
+}
+.pagination-btn:hover,
+.pagination-btn:focus {
+	background: #ddd;
+	transform: scale(1.1);
+}
+.pagination-btn.active {
+	font-weight: bold;
+	transform: scale(1.1);
+}
+
+#results-container {
+	transition: opacity 0.3s ease-in-out;
 }

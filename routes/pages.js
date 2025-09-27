@@ -7,26 +7,16 @@ const router = express.Router();
 router.get("/", async (req, res) => {
 	//get sorting options from query. default to recently added
 	const sortBy = req.query.sort || "recent";
-	let orderBy = /* 'created_at DESC'; */ ["created_at", { ascending: false }];
-
-	// console.log('sort by: ' + sortBy);
+	let orderBy = ["created_at", { ascending: false }];
 
 	if (sortBy === "title") {
-		orderBy = /* 'title ASC' */ ["title", { ascending: true }];
+		orderBy = ["title", { ascending: true }];
 	} else if (sortBy === "rating") {
-		orderBy = /* 'user_rating DESC NULLS LAST' */ [
-			"user_rating",
-			{ ascending: false, nullsFirst: false },
-		];
+		orderBy = ["user_rating", { ascending: false, nullsFirst: false }];
 	}
-	// console.log("Order By: ", orderBy);
 
 	try {
-		const result =
-			/* await db.query(`SELECT * FROM books ORDER BY ${orderBy}`); */ await getAllBooks(
-				orderBy
-			);
-		// console.log(result);
+		const result = await getAllBooks(orderBy);
 
 		const books = result;
 		if (books.length <= 0) {

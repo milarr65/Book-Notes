@@ -1,24 +1,22 @@
 <%- include('partials/header.ejs', { activePage: '' }) %>
 
-    <div class="myContainer-cards">
+<div class="myContainer-cards">
+	<!------------- SEARCH RESULTS --------------->
+	<h3 class="title">Search Results</h3>
 
-        <!------------- SEARCH RESULTS --------------->
-        <h3 class="title">Search Results</h3>
+	<!------------- PAGINATION CONTROLS --------------->
+	<div id="pagination-controls" style="margin-top: 20px"></div>
 
-        <!------------- PAGINATION CONTROLS --------------->
-        <div id="pagination-controls" style="margin-top: 20px;"></div>
+	<!------------- BOOK CARDS --------------->
+	<div id="results-container" class="cards-container"></div>
+</div>
 
-        <!------------- BOOK CARDS --------------->
-        <div id="results-container" class="cards-container"></div>
+<!-- Store JSON data inside a hidden script tag -->
+<script id="results-data" type="application/json">
+	<%- JSON.stringify(results) %>
+</script>
 
-    </div>
+<!-- Link to external JavaScript file -->
+<script src="/js/pagination.js"></script>
 
-    <!-- Store JSON data inside a hidden script tag -->
-    <script id="results-data" type="application/json">
-        <%- JSON.stringify(results) %>
-    </script>
-
-    <!-- Link to external JavaScript file -->
-    <script src="/js/pagination.js"></script>
-
-    <%- include('partials/footer.ejs') %>
+<%- include('partials/footer.ejs') %>

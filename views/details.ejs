@@ -13,23 +13,18 @@
 			<!-- Buttons -->
 			<div class="details-buttons">
 				<% if (isFromApi) { %>
-				<form action="/add-book" method="post">
-					<input
-						type="hidden"
-						name="bookData"
-						value="<%= encodeURIComponent(JSON.stringify(book)) %>"
-					/>
+				<form action="/book/<%= book.olid %>/add" method="get">
 					<button class="btn-soft mt-2 title" type="submit">
 						<i data-lucide="Plus"></i>
 						Add Book
 					</button>
 				</form>
 				<% } else {%>
-				<a href="/edit-book/<%= book.id %>" class="btn-soft mt-2 title">
+				<a href="/book/<%= book.id %>/edit" class="btn-soft mt-2 title">
 					<i data-lucide="Pencil"></i>
 					Edit
 				</a>
-				<form action="/delete/<%= book.id %>" method="post">
+				<form action="/db/<%= book.id %>/delete" method="post">
 					<button
 						class="btn-soft mt-2 title"
 						type="submit"
@@ -55,11 +50,11 @@
 				<p class="text">by <%= book.author %></p>
 
 				<!--------------- Star Rating --------------->
-				<div class="star-rating">
-					<% if (book.apiRatings) { %>
+				<div class="star-rating" style="width: fit-content">
+					<% if (book.ratings) { %>
 					<i data-lucide="Star" style="fill: var(--celadon)"></i>
 					<span>
-						Rated <%= book.apiRatings.average %> (<%= book.apiRatings.count %>
+						Rated <%= book.ratings.average %> / 5 (<%= book.ratings.count %>
 						reviews)
 					</span>
 					<% } else { %>
@@ -104,7 +99,7 @@
 	</div>
 
 	<script>
-		const isFromApi = <%= JSON.stringify(isFromApi) %>;
+		const isFromApi = <%- JSON.stringify(isFromApi) %>;
 		console.log("Is from API:", isFromApi);
 		const content = document.getElementById("description-text");
 		const button = document.getElementById("expandBtn");

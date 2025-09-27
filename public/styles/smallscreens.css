@@ -1,4 +1,4 @@
-@media (max-width: 600px) {
+@media screen and (max-width: 600px) {
 	.myContainer-cards {
 		gap: 0;
 		margin: 0;
@@ -30,17 +30,18 @@
 		min-height: 402px;
 	}
 
-	.book-card {
-		width: 10rem;
-		height: 21rem;
-	}
-
 	.book-cover-container {
 		height: 166px;
 	}
 
 	.card-title {
 		font-size: 1rem;
+	}
+
+	.stars .lucide,
+	.star-rating .lucide {
+		width: 1.2rem;
+		height: 1.2rem;
 	}
 
 	/******** index page ***********/
@@ -52,9 +53,10 @@
 	.add-form {
 		width: 100%;
 	}
-	
+
 	/********* About page *********/
-	.about-text > p, .made-with {
+	.about-text > p,
+	.made-with {
 		max-width: 90%;
 		text-align: left;
 	}
